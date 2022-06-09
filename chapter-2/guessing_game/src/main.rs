@@ -3,6 +3,11 @@ use std::cmp::Ordering;
 use std::io;
 
 fn main() {
+    // let x = 5;
+    // println!("The value of x is: {}", x);
+    // x = 6;
+    // println!("The value of x is: {}", x);
+
     println!("Guess the number!");
     let range = 1..101;
     let secret_number = rand::thread_rng().gen_range(range);
