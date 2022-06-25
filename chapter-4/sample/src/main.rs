@@ -1,3 +1,5 @@
+use std::arch::aarch64::uint16x8_t;
+
 fn main() {
     println!("4 Understanding Ownership");
     main_ownership();
@@ -58,20 +60,60 @@ fn change(some_string: &mut String) {
 fn main_the_slice_type() {
     println!("4.3. The Slice Type");
     let mut s = String::from("Hello World");
-    first_word(&s);
-    s.clear(); // sがmutであっても
+    let length = first_word_length(&s);
+    s.clear(); // &Stringとusizeは完全に切り離されているのでエラーにはならない。
     println!("{}", s);
-    // println!("{}", word);
+    println!("{}", length);
+
+    s = String::from("Hello World");
+    let word = first_word(&s);
+    // s.clear(); // &Stringと&strは完全に切り離されているない可能性があるのでエラーになる。
+    println!("{}", s);
+    println!("{}", word);
+
+    s = String::from("Hello World");
+    let word = first_word(&s);
+    // s.clear(); // &Stringと&strは完全に切り離されているない可能性があるのでエラーになる。
+    println!("{}", s);
+    println!("{}", word);
+
+    s = String::from("Hello World");
+    let word = other_word(&s);
+    // s.clear(); // 実際には&Stringと&strは完全に切り離されているがエラーになる。
+    println!("{}", s);
+    println!("{}", word);
+}
+
+fn first_word_length(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    s.len()
 }
 
 fn first_word(s: &String) -> &str {
     let bytes = s.as_bytes();
 
-    for (_i, &item) in bytes.iter().enumerate() {
+    for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
-            return &"aaa";
+            return &s[..i];
         }
     }
 
-    &"eeee"
+    &s[..]
 }
+
+fn other_word(_s: &String) -> &str {
+    &"good"
+}
+
+// 関数内にオーナーがいる変数戻り値とすることはできない。
+// fn return_list(_s: &String) -> &[i32; 5] {
+//     let a = [1, 2, 3, 4, 5];
+//     &a
+// }
