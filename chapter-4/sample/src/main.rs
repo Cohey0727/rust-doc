@@ -1,7 +1,8 @@
 fn main() {
-    println!("Hello, world!");
+    println!("4 Understanding Ownership");
     main_ownership();
     main_references_borrowing();
+    main_the_slice_type();
 }
 
 // 4.1. What is Ownership?
@@ -49,7 +50,28 @@ fn main_references_borrowing() {
 
     println!("{}", s); // 参照渡してであれば、sは解放されてないし、変更も反映される。
 }
-
 fn change(some_string: &mut String) {
     some_string.push_str(", world");
+}
+
+// The Slice Type
+fn main_the_slice_type() {
+    println!("4.3. The Slice Type");
+    let mut s = String::from("Hello World");
+    first_word(&s);
+    s.clear(); // sがmutであっても
+    println!("{}", s);
+    // println!("{}", word);
+}
+
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (_i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &"aaa";
+        }
+    }
+
+    &"eeee"
 }
